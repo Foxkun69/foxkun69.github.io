@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Particle Effect</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden; /* Đảm bảo không có thanh cuộn */
+      height: 100vh;
+      background-color: transparent; /* Nền trong suốt */
+    }
+    
+    .particle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background-color: rgba(255, 255, 255, 0.8); /* Màu trắng mờ */
+      border-radius: 50%; /* Tạo hình dạng tròn */
+      pointer-events: none; /* Không tương tác với chuột */
+    }
+  </style>
+</head>
+<body>
+
+<script>
+  document.addEventListener('mousemove', function(event) {
+    createParticle(event.clientX, event.clientY);
+  });
+
+  function createParticle(x, y) {
+    // Tạo một phần tử hạt mới
+    const particle = document.createElement('div');
+    particle.classList.add('particle');
+    document.body.appendChild(particle);
+
+    // Đặt vị trí ban đầu của hạt theo con trỏ chuột
+    particle.style.left = `${x}px`;
+    particle.style.top = `${y}px`;
+
+    // Random kích thước và tốc độ rơi
+    const size = Math.random() * 5 + 5; // Kích thước ngẫu nhiên từ 5px đến 10px
+    particle.style.width = `${size}px`;
+    particle.style.height = `${size}px`;
+
+    // Tốc độ rơi và thời gian sống của hạt
+    const fallSpeed = Math.random() * 3 + 2; // Tốc độ rơi ngẫu nhiên
+    const lifetime = 2000 + Math.random() * 1000; // Thời gian tồn tại từ 2 đến 3 giây
+
+    // Tạo animation rơi cho hạt
+    const animation = particle.animate([
+      { transform: `translateY(0px)`, opacity: 1 },
+      { transform: `translateY(${fallSpeed * 100}px)`, opacity: 0 }
+    ], {
+      duration: lifetime,
+      easing: 'ease-out',
+      fill: 'forwards'
+    });
+
+    // Xóa hạt sau khi animation kết thúc
+    animation.onfinish = () => {
+      particle.remove();
+    };
+  }
+</script>
+
+</body>
+</html>
